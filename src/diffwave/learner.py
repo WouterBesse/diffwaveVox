@@ -168,8 +168,8 @@ def train(args, params):
   if args.data_dirs[0] == 'gtzan':
     dataset = from_gtzan(params)
   else:
-    print("Dataset:", args.data_dirs)
     dataset = from_path(args.data_dirs, params)
+    print("Dataset:", dataset)
   model = DiffWave(params).cuda()
   _train_impl(0, model, dataset, args, params)
 
