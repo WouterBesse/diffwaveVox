@@ -30,8 +30,11 @@ class ConditionalDataset(torch.utils.data.Dataset):
     print("Pathss: ", paths);
     self.filenames = []
     for path in paths:
-      self.filenames += glob(f'{path}/*.wav', recursive=True)
-    print("Filenames: ",self.filenames);
+      print("Single path:", path, " Glob command: ", f'{path}/**/*.wav')
+      print()
+      self.filenames += glob(f'{path}/**/*.wav', recursive=True)
+      print("Filename: ",glob(f'{path}/**/*.wav', recursive=True))
+    #print("Filenames: ",self.filenames)
 
   def __len__(self):
     return len(self.filenames)
