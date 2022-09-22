@@ -27,6 +27,7 @@ from torch.utils.data.distributed import DistributedSampler
 class ConditionalDataset(torch.utils.data.Dataset):
   def __init__(self, paths):
     super().__init__()
+    print("Pathss: ", paths);
     self.filenames = []
     for path in paths:
       self.filenames += glob(f'{path}/*.wav', recursive=True)
