@@ -30,6 +30,7 @@ def fileLister (path):
   print(newpath)
   for file in os.listdir(newpath):
     if file.endswith(".wav"):
+      print("NewFile: ", os.path.join(newpath, file))
       files.append(os.path.join(newpath, file))
   return(files)
 
