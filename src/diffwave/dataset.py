@@ -25,7 +25,8 @@ from torch.utils.data.distributed import DistributedSampler
 
 def fileLister (path):
   files = []
-  newpath = os.os. getcwd().join(path)
+  newpath = os.getcwd()
+  newpath = os.newpath.join(path)
   print(newpath)
   for file in os.listdir(newpath):
     if file.endswith(".wav"):
