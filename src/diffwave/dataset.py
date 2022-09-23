@@ -37,6 +37,7 @@ class ConditionalDataset(torch.utils.data.Dataset):
     print("Pathss: ", paths);
     self.filenames = []
     for path in paths:
+      os.makedirs(path, exist_ok=True)
       print("Single path:", path, " Glob command: ", f'{path}/**/*.wav')
       self.filenames += fileLister(path)
       print("Filename: ", self.filenames)
