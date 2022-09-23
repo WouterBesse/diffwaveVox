@@ -23,6 +23,13 @@ import torchaudio
 from glob import glob
 from torch.utils.data.distributed import DistributedSampler
 
+def fileLister (path):
+  files = []
+  for file in os.listdir(path):
+    if file.endswith(".wav"):
+      files.append(os.path.join(path, file))
+  return(files)
+
 
 class ConditionalDataset(torch.utils.data.Dataset):
   def __init__(self, paths):
@@ -31,9 +38,8 @@ class ConditionalDataset(torch.utils.data.Dataset):
     self.filenames = []
     for path in paths:
       print("Single path:", path, " Glob command: ", f'{path}/**/*.wav')
-      print()
-      self.filenames += glob(f'{path}/**/*.wav', recursive=True)
-      print("Filename: ",glob(f'{path}/**/*.wav', recursive=True))
+      self.filenames += fileLister(path)
+      print("Filename: ", self.filenames)
     #print("Filenames: ",self.filenames)
 
   def __len__(self):
