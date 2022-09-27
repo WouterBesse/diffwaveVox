@@ -17,6 +17,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import gc
 
 from math import sqrt
 
@@ -71,11 +72,14 @@ class DiffusionEmbedding(nn.Module):
 
 class SpectrogramUpsampler(nn.Module):
   def __init__(self, n_mels):
+    print("Dikke dikheid")
     super().__init__()
     self.conv1 = ConvTranspose2d(1, 1, [3, 32], stride=[1, 16], padding=[1, 8])
     self.conv2 = ConvTranspose2d(1, 1,  [3, 32], stride=[1, 16], padding=[1, 8])
 
   def forward(self, x):
+    print(torch.cuda.memory_allocated(0))
+    
     x = torch.unsqueeze(x, 1)
     x = self.conv1(x)
     x = F.leaky_relu(x, 0.4)
@@ -143,11 +147,16 @@ class DiffWave(nn.Module):
     nn.init.zeros_(self.output_projection.weight)
 
   def forward(self, audio, diffusion_step, spectrogram=None):
+    torch.cuda.empty_cache()
+    gc.collect()
+    print("In forward")
     assert (spectrogram is None and self.spectrogram_upsampler is None) or \
            (spectrogram is not None and self.spectrogram_upsampler is not None)
     x = audio.unsqueeze(1)
     x = self.input_projection(x)
     x = F.relu(x)
+
+
 
     diffusion_step = self.diffusion_embedding(diffusion_step)
     if self.spectrogram_upsampler: # use conditional model

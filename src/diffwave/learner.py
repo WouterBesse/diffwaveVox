@@ -22,9 +22,9 @@ from torch.nn.parallel import DistributedDataParallel
 from torch.utils.tensorboard import SummaryWriter
 from tqdm import tqdm
 
-from dataset import from_path, from_gtzan
-from model import DiffWave
-from params import AttrDict
+from diffwave.dataset import from_path, from_gtzan
+from diffwave.model import DiffWave
+from diffwave.params import AttrDict
 
 
 def _nested_map(struct, map_fn):
@@ -169,7 +169,6 @@ def train(args, params):
     dataset = from_gtzan(params)
   else:
     dataset = from_path(args.data_dirs, params)
-    print("Dataset:", dataset)
   model = DiffWave(params).cuda()
   _train_impl(0, model, dataset, args, params)
 
